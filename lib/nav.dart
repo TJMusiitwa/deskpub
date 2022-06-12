@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:deskpub/pages/bookmark_page.dart';
 import 'package:deskpub/pages/favourites_page.dart';
+import 'package:deskpub/pages/firebase_page.dart';
 import 'package:deskpub/pages/google_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Colors;
 import 'package:macos_ui/macos_ui.dart';
 
 class Nav extends StatefulWidget {
@@ -20,12 +21,10 @@ class _NavState extends State<Nav> {
 
   final List<Widget> pages = <Widget>[
     //CupertinoTabView(builder: (BuildContext context) => const MenuPage()),
-    const FavouritesPage(),
-    const GooglePage(),
-    const BookmarkPage(),
-
-    //const CartPage(),
-    //CupertinoTabView(builder: (BuildContext context) => const SettingsPage()),
+    CupertinoTabView(builder: (BuildContext context) => const FavouritesPage()),
+    CupertinoTabView(builder: (BuildContext context) => const GooglePage()),
+    CupertinoTabView(builder: (BuildContext context) => const FirebasePage()),
+    CupertinoTabView(builder: (BuildContext context) => const BookmarkPage()),
   ];
 
   @override
@@ -41,18 +40,30 @@ class _NavState extends State<Nav> {
                       items: const [
                         SidebarItem(
                           label: Text('Flutter Favourites'),
-                          leading: Icon(CupertinoIcons.heart_solid),
+                          leading: MacosIcon(
+                            CupertinoIcons.heart_solid,
+                            color: CupertinoColors.systemRed,
+                          ),
                         ),
                         SidebarItem(
-                            leading: Icon(Icons.android),
+                            leading: MacosIcon(
+                              Icons.android,
+                              color: CupertinoColors.systemGreen,
+                            ),
                             label: Text('Google Packages')),
                         SidebarItem(
+                            leading: MacosIcon(
+                              CupertinoIcons.flame_fill,
+                              color: CupertinoColors.systemYellow,
+                            ),
+                            label: Text('Firebase Packages')),
+                        SidebarItem(
                           label: Text('Bookmarks'),
-                          leading: Icon(CupertinoIcons.bookmark_fill),
+                          leading: MacosIcon(CupertinoIcons.bookmark_fill),
                         ),
                       ],
                     ),
-                minWidth: 200),
+                minWidth: 250),
             child: IndexedStack(
               index: pageIndex,
               children: pages,
@@ -72,15 +83,28 @@ class _NavState extends State<Nav> {
                 displayMode: PaneDisplayMode.open,
                 items: [
                   PaneItem(
-                    icon: const Icon(FluentIcons.heart),
+                    icon: Icon(
+                      FluentIcons.heart,
+                      color: Colors.red,
+                    ),
                     title: const Text('Flutter Favourites'),
                   ),
                   PaneItem(
-                    icon: const Icon(Icons.android),
+                    icon: Icon(Icons.android, color: Colors.green),
                     title: const Text('Google Packages'),
                   ),
                   PaneItem(
-                    icon: const Icon(FluentIcons.bookmarks),
+                    icon: Icon(
+                      FluentIcons.flame_solid,
+                      color: Colors.yellow,
+                    ),
+                    title: const Text('Firebase Packages'),
+                  ),
+                  PaneItem(
+                    icon: Icon(
+                      FluentIcons.bookmarks,
+                      color: Colors.blue,
+                    ),
                     title: const Text('Bookmarks'),
                   ),
                 ]),
