@@ -1,4 +1,5 @@
 import 'package:deskpub/main.dart';
+import 'package:deskpub/pages/package_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -6,6 +7,7 @@ import 'package:macos_ui/macos_ui.dart';
 final googlePackagesProvider =
     FutureProvider.autoDispose<List<String>>((ref) async {
   final client = ref.watch(pubClientProvider);
+  ref.onDispose(() => client.close());
   return await client.fetchGooglePackages();
 });
 
@@ -17,22 +19,40 @@ class GooglePage extends ConsumerWidget {
     AsyncValue<List<String>> allGooglePackagesList =
         ref.watch(googlePackagesProvider);
     return MacosScaffold(
-      toolBar: const ToolBar(
-        title: Text('Google Packages'),
+      toolBar: ToolBar(
+        title: const Text('Google Packages'),
+        actions: [
+          //? Work on adding search as done in https://github.com/TJMusiitwa/not_apple_developer/blob/77d4b5d3596b92e2b917ced0f63c6d8947b5e57e/lib/pages/search.dart
+          CustomToolbarItem(inToolbarBuilder: (context) {
+            return SizedBox(
+              width: 200,
+              child: MacosSearchField(
+                placeholder: 'Search',
+                onChanged: (value) {},
+              ),
+            );
+          }),
+        ],
       ),
       children: [
         ContentArea(
           builder: (context, controller) => allGooglePackagesList.when(
             data: ((data) => ListView.builder(
-                  controller: controller,
+                  controller: ScrollController(),
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     final package = data[index];
                     return MacosListTile(
-                        title: Text(
-                      package,
-                      style: MacosTheme.of(context).typography.title3,
-                    ));
+                      title: Text(
+                        package,
+                        style: MacosTheme.of(context).typography.title3,
+                      ),
+                      onClick: () => Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  PackageDetailsPage(package))),
+                    );
                   },
                 )),
             error: (error, trace) => Center(
