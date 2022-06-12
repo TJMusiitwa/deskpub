@@ -7,10 +7,12 @@ import 'package:pub_api_client/pub_api_client.dart';
 
 final pubClientProvider = Provider.autoDispose<PubClient>((ref) => PubClient());
 void main() {
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MacosApp(

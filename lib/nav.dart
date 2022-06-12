@@ -10,7 +10,7 @@ import 'package:flutter/material.dart' hide Colors;
 import 'package:macos_ui/macos_ui.dart';
 
 class Nav extends StatefulWidget {
-  const Nav({Key? key}) : super(key: key);
+  const Nav({super.key});
 
   @override
   State<Nav> createState() => _NavState();

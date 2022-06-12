@@ -12,7 +12,7 @@ final googlePackagesProvider =
 });
 
 class GooglePage extends ConsumerWidget {
-  const GooglePage({Key? key}) : super(key: key);
+  const GooglePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

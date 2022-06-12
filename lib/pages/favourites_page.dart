@@ -12,7 +12,7 @@ final flutterFavouritesProvider =
 });
 
 class FavouritesPage extends ConsumerWidget {
-  const FavouritesPage({Key? key}) : super(key: key);
+  const FavouritesPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

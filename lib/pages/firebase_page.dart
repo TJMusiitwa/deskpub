@@ -13,7 +13,7 @@ final firebasePackagesProvider =
 });
 
 class FirebasePage extends ConsumerWidget {
-  const FirebasePage({Key? key}) : super(key: key);
+  const FirebasePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
