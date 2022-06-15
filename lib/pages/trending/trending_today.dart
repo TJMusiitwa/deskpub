@@ -56,9 +56,27 @@ class _TrendingTodayState extends ConsumerState<TrendingToday>
         itemBuilder: (context, index) {
           final trending = data[index];
           return CupertinoListTile(
-              title: Text(
-                trending.repoName,
-                style: MacosTheme.of(context).typography.title2,
+              title: Row(
+                children: [
+                  Text(
+                    trending.repoName,
+                    style: MacosTheme.of(context).typography.title2,
+                  ),
+                  const Spacer(),
+                  const MacosIcon(
+                    CupertinoIcons.star,
+                    size: 14,
+                    color: CupertinoColors.systemYellow,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    trending.totalStars.toString(),
+                    style: MacosTheme.of(context)
+                        .typography
+                        .body
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               subtitle: Text(
                 trending.description,
