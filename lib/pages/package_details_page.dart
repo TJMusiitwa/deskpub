@@ -24,6 +24,7 @@ class PackageDetailsPage extends ConsumerWidget {
     return MacosScaffold(
       toolBar: ToolBar(
         title: Text(packageName),
+        titleWidth: 400,
         actions: [
           ToolBarIconButton(
             label: 'Open',

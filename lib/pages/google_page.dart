@@ -7,6 +7,7 @@ import 'package:macos_ui/macos_ui.dart';
 final googlePackagesProvider =
     FutureProvider.autoDispose<List<String>>((ref) async {
   final client = ref.watch(pubClientProvider);
+  ref.keepAlive();
   ref.onDispose(() => client.close());
   return await client.fetchGooglePackages();
 });
@@ -37,7 +38,7 @@ class GooglePage extends ConsumerWidget {
       children: [
         ContentArea(
           builder: (context, controller) => allGooglePackagesList.when(
-            data: ((data) => ListView.builder(
+            data: ((data) => ListView.separated(
                   controller: ScrollController(),
                   itemCount: data.length,
                   itemBuilder: (context, index) {
@@ -54,6 +55,11 @@ class GooglePage extends ConsumerWidget {
                                   PackageDetailsPage(package))),
                     );
                   },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Container(
+                    height: 1,
+                    color: MacosColors.separatorColor,
+                  ),
                 )),
             error: (error, trace) => Center(
               child: Text('Error: $error'),
