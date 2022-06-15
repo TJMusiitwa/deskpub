@@ -28,11 +28,14 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
+  cupertino_list_tile: ^0.2.1
   fluent_ui: ^3.12.0
   fluentui_system_icons: ^1.1.170
   flutter:
     sdk: flutter
-  flutter_riverpod: ^1.0.4
+  flutter_markdown: ^0.6.10+2
+  flutter_riverpod: ^2.0.0-dev.9
+  http: ^0.13.4
   macos_ui: ^1.4.1+1
   pub_api_client: ^2.2.1
   share_plus: ^4.0.7

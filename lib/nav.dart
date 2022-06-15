@@ -4,6 +4,7 @@ import 'package:deskpub/pages/bookmark_page.dart';
 import 'package:deskpub/pages/favourites_page.dart';
 import 'package:deskpub/pages/firebase_page.dart';
 import 'package:deskpub/pages/google_page.dart';
+import 'package:deskpub/pages/trending_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide Colors;
@@ -24,6 +25,7 @@ class _NavState extends State<Nav> {
     CupertinoTabView(builder: (BuildContext context) => const FavouritesPage()),
     CupertinoTabView(builder: (BuildContext context) => const GooglePage()),
     CupertinoTabView(builder: (BuildContext context) => const FirebasePage()),
+    CupertinoTabView(builder: (BuildContext context) => const TrendingPage()),
     CupertinoTabView(builder: (BuildContext context) => const BookmarkPage()),
   ];
 
@@ -57,6 +59,12 @@ class _NavState extends State<Nav> {
                               color: CupertinoColors.systemYellow,
                             ),
                             label: Text('Firebase Packages')),
+                        SidebarItem(
+                            leading: MacosIcon(
+                              CupertinoIcons.chart_bar,
+                              color: CupertinoColors.systemIndigo,
+                            ),
+                            label: Text('Trending Repositories')),
                         SidebarItem(
                           label: Text('Bookmarks'),
                           leading: MacosIcon(CupertinoIcons.bookmark_fill),
@@ -99,6 +107,13 @@ class _NavState extends State<Nav> {
                       color: Colors.yellow,
                     ),
                     title: const Text('Firebase Packages'),
+                  ),
+                  PaneItem(
+                    icon: Icon(
+                      FluentIcons.graph_symbol,
+                      color: Colors.yellow,
+                    ),
+                    title: const Text('Trending Repositories'),
                   ),
                   PaneItem(
                     icon: Icon(
