@@ -43,8 +43,8 @@ class _NavState extends State<Nav> {
                         SidebarItem(
                           label: Text('Flutter Favourites'),
                           leading: MacosIcon(
-                            CupertinoIcons.heart_solid,
-                            color: CupertinoColors.systemRed,
+                            CupertinoIcons.rosette,
+                            color: CupertinoColors.systemPink,
                           ),
                         ),
                         SidebarItem(
