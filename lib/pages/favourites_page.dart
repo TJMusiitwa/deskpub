@@ -1,16 +1,9 @@
-import 'package:deskpub/main.dart';
 import 'package:deskpub/pages/package_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
-final flutterFavouritesProvider =
-    FutureProvider.autoDispose<List<String>>((ref) async {
-  final client = ref.watch(pubClientProvider);
-  ref.keepAlive();
-  ref.onDispose(() => client.close());
-  return await client.fetchFlutterFavorites();
-});
+import '../providers/providers.dart';
 
 class FavouritesPage extends ConsumerWidget {
   const FavouritesPage({super.key});

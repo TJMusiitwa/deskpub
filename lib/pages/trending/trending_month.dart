@@ -3,17 +3,10 @@ import 'package:deskpub/models/trending.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:macos_ui/macos_ui.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-final monthTrendingProvider = FutureProvider<List<Trending>>((ref) async {
-  http.Response response = await http
-      .get(Uri.parse('http://api.flutter.space/v1/trending/month.json'));
-
-  final trending = trendingFromJson(response.body);
-  return trending;
-});
+import '../../providers/providers.dart';
 
 class TrendingMonth extends ConsumerWidget {
   const TrendingMonth({Key? key}) : super(key: key);

@@ -1,16 +1,9 @@
-import 'package:deskpub/main.dart';
 import 'package:deskpub/pages/package_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
-final googlePackagesProvider =
-    FutureProvider.autoDispose<List<String>>((ref) async {
-  final client = ref.watch(pubClientProvider);
-  ref.keepAlive();
-  ref.onDispose(() => client.close());
-  return await client.fetchGooglePackages();
-});
+import '../providers/providers.dart';
 
 class GooglePage extends ConsumerWidget {
   const GooglePage({super.key});

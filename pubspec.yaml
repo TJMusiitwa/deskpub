@@ -35,6 +35,8 @@ dependencies:
     sdk: flutter
   flutter_markdown: ^0.6.10+2
   flutter_riverpod: ^2.0.0-dev.9
+  flutter_svg: ^1.1.0
+  github: ^9.3.0
   http: ^0.13.4
   macos_ui: ^1.4.1+1
   pub_api_client: ^2.2.1

@@ -1,33 +1,11 @@
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
-import 'package:deskpub/models/trending.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:macos_ui/macos_ui.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-final todayTrendingProvider =
-    FutureProvider.autoDispose<List<Trending>>((ref) async {
-  var request = http.Request(
-      'GET', Uri.parse('http://api.flutter.space/v1/trending/today.json'));
-
-  //http.StreamedResponse response = await request.send();
-
-  http.Response response = await http
-      .get(Uri.parse('http://api.flutter.space/v1/trending/today.json'));
-
-  // if (response.statusCode == 200) {
-  //   print(await response.stream.bytesToString());
-  // } else {
-  //   print(response.reasonPhrase);
-  // }
-  ref.keepAlive();
-
-  final trending = trendingFromJson(response.body);
-
-  return trending;
-});
+import '../../providers/providers.dart';
 
 class TrendingToday extends ConsumerStatefulWidget {
   const TrendingToday({Key? key}) : super(key: key);

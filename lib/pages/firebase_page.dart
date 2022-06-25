@@ -1,16 +1,9 @@
-import 'package:deskpub/main.dart';
 import 'package:deskpub/pages/package_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
-import 'package:pub_api_client/pub_api_client.dart';
 
-final firebasePackagesProvider =
-    FutureProvider.autoDispose<List<PackageResult>>((ref) async {
-  final client = ref.watch(pubClientProvider);
-  ref.onDispose(() => client.close());
-  return await client.fetchPublisherPackages('firebase.google.com');
-});
+import '../providers/providers.dart';
 
 class FirebasePage extends ConsumerWidget {
   const FirebasePage({super.key});

@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
+import '../providers/providers.dart';
+
 class TrendingPage extends ConsumerStatefulWidget {
   const TrendingPage({Key? key}) : super(key: key);
 
