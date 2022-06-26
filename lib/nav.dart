@@ -8,6 +8,7 @@ import 'package:deskpub/pages/trending_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide Colors;
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class Nav extends StatefulWidget {
@@ -39,8 +40,8 @@ class _NavState extends State<Nav> {
                       onChanged: (i) => setState(
                         (() => pageIndex = i),
                       ),
-                      items: const [
-                        SidebarItem(
+                      items: [
+                        const SidebarItem(
                           label: Text('Flutter Favourites'),
                           leading: MacosIcon(
                             CupertinoIcons.rosette,
@@ -48,24 +49,20 @@ class _NavState extends State<Nav> {
                           ),
                         ),
                         SidebarItem(
-                            leading: MacosIcon(
-                              Icons.android,
-                              color: CupertinoColors.systemGreen,
-                            ),
-                            label: Text('Google Packages')),
+                            leading: SvgPicture.asset('assets/google.svg',
+                                color: CupertinoColors.systemGreen),
+                            label: const Text('Google Packages')),
                         SidebarItem(
-                            leading: MacosIcon(
-                              CupertinoIcons.flame_fill,
-                              color: CupertinoColors.systemYellow,
-                            ),
-                            label: Text('Firebase Packages')),
-                        SidebarItem(
+                            leading: SvgPicture.asset('assets/firebase.svg',
+                                color: CupertinoColors.systemYellow),
+                            label: const Text('Firebase Packages')),
+                        const SidebarItem(
                             leading: MacosIcon(
                               CupertinoIcons.chart_bar,
                               color: CupertinoColors.systemIndigo,
                             ),
                             label: Text('Trending Repositories')),
-                        SidebarItem(
+                        const SidebarItem(
                           label: Text('Bookmarks'),
                           leading: MacosIcon(CupertinoIcons.bookmark_fill),
                         ),
