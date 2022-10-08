@@ -29,7 +29,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   cupertino_list_tile: ^0.2.1
-  fluent_ui: ^3.12.0
+  fluent_ui: ^4.0.1
   fluentui_system_icons: ^1.1.170
   flutter:
     sdk: flutter

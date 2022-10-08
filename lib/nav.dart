@@ -93,10 +93,12 @@ class _NavState extends State<Nav> {
                       color: Colors.red,
                     ),
                     title: const Text('Flutter Favourites'),
+                    body: const FavouritesPage(),
                   ),
                   PaneItem(
                     icon: Icon(Icons.android, color: Colors.green),
                     title: const Text('Google Packages'),
+                    body: const GooglePage(),
                   ),
                   PaneItem(
                     icon: Icon(
@@ -104,6 +106,7 @@ class _NavState extends State<Nav> {
                       color: Colors.yellow,
                     ),
                     title: const Text('Firebase Packages'),
+                    body: const FirebasePage(),
                   ),
                   PaneItem(
                     icon: Icon(
@@ -111,23 +114,19 @@ class _NavState extends State<Nav> {
                       color: Colors.yellow,
                     ),
                     title: const Text('Trending Repositories'),
+                    body: const TrendingPage(),
                   ),
                   PaneItem(
-                    icon: Icon(
-                      FluentIcons.bookmarks,
-                      color: Colors.blue,
-                    ),
-                    title: const Text('Bookmarks'),
-                  ),
+                      icon: Icon(
+                        FluentIcons.bookmarks,
+                        color: Colors.blue,
+                      ),
+                      title: const Text('Bookmarks'),
+                      body: const BookmarkPage()),
                 ]),
-            content: NavigationBody(
-              index: pageIndex,
-              children: pages,
-              transitionBuilder: (child, animation) {
-                return EntrancePageTransition(
-                    animation: animation, child: child);
-              },
-            ),
+            transitionBuilder: (child, animation) {
+              return EntrancePageTransition(animation: animation, child: child);
+            },
           );
   }
 }
