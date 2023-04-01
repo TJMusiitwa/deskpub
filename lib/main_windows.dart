@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return FluentApp(
       title: 'DeskPub',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
+      theme: FluentThemeData(
         scaffoldBackgroundColor: const Color(0xfffafafa),
       ),
       home: const Nav(),

@@ -50,11 +50,16 @@ class _NavState extends State<Nav> {
                         ),
                         SidebarItem(
                             leading: SvgPicture.asset('assets/google.svg',
-                                color: CupertinoColors.systemGreen),
+                            colorFilter: const ColorFilter.mode(
+                                  CupertinoColors.systemGreen, BlendMode.srcIn),
+                                ),
                             label: const Text('Google Packages')),
                         SidebarItem(
                             leading: SvgPicture.asset('assets/firebase.svg',
-                                color: CupertinoColors.systemYellow),
+                            colorFilter: const ColorFilter.mode(
+                                    CupertinoColors.systemYellow,
+                                    BlendMode.srcIn),
+                               ),
                             label: const Text('Firebase Packages')),
                         const SidebarItem(
                             leading: MacosIcon(

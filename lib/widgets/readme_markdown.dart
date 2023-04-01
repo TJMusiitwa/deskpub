@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:url_launcher/url_launcher_string.dart';
@@ -32,10 +33,9 @@ class PackageReadMeMarkdown extends StatelessWidget {
       ],
       imageBuilder: (url, _, __) => url.isScheme('file')
           ? const SizedBox.shrink()
-          : Image.network(
-              url.toString(),
-              fit: BoxFit.cover,
-            ),
+          : url.path.endsWith('.svg')
+              ? SvgPicture.network(url.origin + url.path)
+              : Image.network(url.origin + url.path),
       onTapLink: (link, _, __) => launchUrlString(link),
     );
   }

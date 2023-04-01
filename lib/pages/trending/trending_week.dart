@@ -1,7 +1,6 @@
-import 'package:cupertino_list_tile/cupertino_list_tile.dart';
+
 import 'package:deskpub/models/trending.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -53,10 +52,10 @@ class TrendingWeek extends ConsumerWidget {
             trailing: const SizedBox.shrink(),
             onTap: () => launchUrlString(
                 'https://github.com/${trending.owner}/${trending.repoName}'),
-            onLongPress: () => Clipboard.setData(ClipboardData(
-                    text:
-                        'https://github.com/${trending.owner}/${trending.repoName}'))
-                .whenComplete(() => debugPrint('Link copied')),
+            // onLongPress: () => Clipboard.setData(ClipboardData(
+            //         text:
+            //             'https://github.com/${trending.owner}/${trending.repoName}'))
+            //     .whenComplete(() => debugPrint('Link copied')),
           );
         },
       ),

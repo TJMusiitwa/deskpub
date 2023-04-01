@@ -1,13 +1,15 @@
-import 'package:deskpub/main.dart';
+import 'package:deskpub/widgets/readme_markdown.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter/material.dart' show SelectableText;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:github/github.dart';
 import 'package:http/http.dart' as http;
 import 'package:macos_ui/macos_ui.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:pub_api_client/pub_api_client.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+import '../providers/providers.dart';
 
 class PackageDetailsPage extends ConsumerWidget {
   PackageDetailsPage(this.packageName, {super.key});
@@ -50,6 +52,50 @@ class PackageDetailsPage extends ConsumerWidget {
     return data.then((value) => value);
   });
 
+  final packageReadmeProvider = FutureProvider.autoDispose
+      .family<String, String>((ref, packageName) async {
+    final client = ref.watch(pubClientProvider);
+    final githubClient = ref.watch(githubClientProvider);
+
+    final owner = await client.packageInfo(packageName).then((value) =>
+        value.latestPubspec.author ??
+        value.latestPubspec.homepage!.split('/')[3]);
+    final name = await client
+        .packageInfo(packageName)
+        .then((value) => value.latestPubspec.name ?? value.name);
+    final readme =
+        githubClient.repositories.getReadme(RepositorySlug(owner, name));
+
+    ref.onDispose(() {
+      client.close();
+      githubClient.client.close();
+    });
+
+    return readme.then((value) => value.text);
+  });
+
+  final githubStuffProvider = FutureProvider.autoDispose
+      .family<GitHubFile, String>((ref, packageName) async {
+    final client = ref.watch(pubClientProvider);
+    final githubClient = ref.watch(githubClientProvider);
+
+    final owner = await client.packageInfo(packageName).then((value) =>
+        value.latestPubspec.author ??
+        value.latestPubspec.homepage!.split('/')[3]);
+    final name = await client
+        .packageInfo(packageName)
+        .then((value) => value.latestPubspec.name ?? value.name);
+    final readme =
+        githubClient.repositories.getReadme(RepositorySlug(owner, name));
+
+    ref.onDispose(() {
+      client.close();
+      githubClient.client.close();
+    });
+
+    return readme.then((value) => value);
+  });
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<PubPackage> singlePackage =
@@ -59,6 +105,10 @@ class PackageDetailsPage extends ConsumerWidget {
         ref.watch(scorePackageProvider(packageName));
 
     AsyncValue<String> markdown = ref.watch(markdownProvider(packageName));
+
+    AsyncValue<String?> packageReadme =
+        ref.watch(packageReadmeProvider(packageName));
+
     return MacosScaffold(
       toolBar: ToolBar(
         title: Text(packageName),
@@ -98,54 +148,29 @@ class PackageDetailsPage extends ConsumerWidget {
                                 .body
                                 .copyWith(fontSize: 16)),
                         const SizedBox(height: 16),
-                        Text(package.url),
-                        //SelectableText(package.latestPubspec.homepage! ?? ''),
-                        Text(
-                            '${package.latestPubspec.homepage!.replaceAll('github.com', 'raw.githubusercontent.com')}/README.md'),
+                        ...[
+                          if (package.latestPubspec.homepage != null)
+                            package.latestPubspec.homepage
+                                    !.contains('github.com')
+                                ? SelectableText(
+                                    'Raw ReadmeURL: ${package.latestPubspec.homepage!.replaceAll('github.com', 'raw.githubusercontent.com')}/README.md'
+                                        .replaceFirst('/tree', ''))
+                                : package.latestPubspec.unParsedYaml!
+                                        .containsKey('repository')
+                                    ? SelectableText(
+                                        'From UnparsedYaml: ${package.latestPubspec.unParsedYaml!['repository']}README.md')
+                                    : const Text('nothing here'),
+                        ],
                         const SizedBox(height: 16),
-                        package.latestPubspec.homepage!.isNotEmpty == true
-                            ? markdown.when(
-                                data: (readme) => Markdown(
-                                  data: readme,
-                                  selectable: true,
-                                  shrinkWrap: true,
-                                  styleSheetTheme:
-                                      MarkdownStyleSheetBaseTheme.platform,
-                                  styleSheet:
-                                      MarkdownStyleSheet.fromCupertinoTheme(
-                                          CupertinoTheme.of(context).copyWith(
-                                    brightness:
-                                        MacosTheme.of(context).brightness,
-                                    primaryColor:
-                                        MacosTheme.of(context).primaryColor,
-                                    scaffoldBackgroundColor:
-                                        MacosTheme.of(context).canvasColor,
-                                  )),
-                                  extensionSet: md.ExtensionSet.gitHubFlavored,
-                                  blockSyntaxes: const [
-                                    md.CodeBlockSyntax(),
-                                    md.TableSyntax()
-                                  ],
-                                  inlineSyntaxes: [
-                                    md.InlineHtmlSyntax(),
-                                    md.CodeSyntax(),
-                                  ],
-                                  imageBuilder: (url, _, __) =>
-                                      url.isScheme('file')
-                                          ? const SizedBox.shrink()
-                                          : Image.network(
-                                              url.toString(),
-                                              fit: BoxFit.cover,
-                                            ),
-                                  onTapLink: (link, _, __) =>
-                                      launchUrlString(link),
-                                ),
-                                error: (error, trace) =>
-                                    Center(child: Text('Error: $error')),
-                                loading: () =>
-                                    const Center(child: ProgressCircle()),
-                              )
-                            : const Text('No README.md found'),
+                        SelectableText(
+                            'From UnparsedYaml: ${package.latestPubspec.unParsedYaml!['repository']}README.md'),
+                        const SizedBox(height: 16),
+                        markdown.when(
+                          data: ((data) => PackageReadMeMarkdown(readme: data)),
+                          error: (error, trace) =>
+                              Center(child: Text('Error: $error')),
+                          loading: () => const Center(child: ProgressCircle()),
+                        )
                       ],
                     ),
                   )),
@@ -192,10 +217,10 @@ class PackageDetailsPage extends ConsumerWidget {
                     child: Text('Loading Package Metrics...'),
                   ),
                 ),
-            minWidth: 150,
+            minSize: 150,
             resizableSide: ResizableSide.left,
             isResizable: false,
-            startWidth: 250)
+            startSize: 250)
       ],
     );
   }

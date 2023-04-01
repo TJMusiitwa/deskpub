@@ -31,8 +31,8 @@ class _TrendingPageState extends ConsumerState<TrendingPage>
               icon: const MacosIcon(CupertinoIcons.refresh),
               showLabel: true,
               onPressed: () {
-                ref.refresh(monthTrendingProvider);
-                ref.refresh(todayTrendingProvider);
+                ref.invalidate(monthTrendingProvider);
+                ref.invalidate(todayTrendingProvider);
                 ref.read(weekTrendingProvider);
               }),
         ],

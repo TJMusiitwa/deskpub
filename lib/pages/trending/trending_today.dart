@@ -1,6 +1,5 @@
-import 'package:cupertino_list_tile/cupertino_list_tile.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -64,9 +63,10 @@ class _TrendingTodayState extends ConsumerState<TrendingToday>
               trailing: const SizedBox.shrink(),
               onTap: () => launchUrlString(
                   'https://github.com/${trending.owner}/${trending.repoName}'),
-              onLongPress: () => Clipboard.setData(ClipboardData(
-                  text:
-                      'https://github.com/${trending.owner}/${trending.repoName}')));
+              // onLongPress: () => Clipboard.setData(ClipboardData(
+              //     text:
+              //         'https://github.com/${trending.owner}/${trending.repoName}'))
+                      );
         },
       ),
       error: (error, trace) => Center(child: Text('Error: $error')),
