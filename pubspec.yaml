@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.19.0 <3.0.0"
+  sdk: '>=3.2.3 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -27,23 +27,26 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cupertino_icons: ^1.0.5
-  fluent_ui: ^4.4.2
-  fluentui_system_icons: ^1.1.198
+  cupertino_icons: ^1.0.6
+  fluent_ui: ^4.8.6
+  fluentui_system_icons: ^1.1.229
   flutter:
     sdk: flutter
-  flutter_markdown: ^0.6.14
-  flutter_riverpod: ^2.3.2
-  flutter_svg: ^2.0.4
-  github: ^9.11.0
-  http: ^0.13.5
-  macos_ui: ^1.12.2
-  pub_api_client: ^2.4.0
-  share_plus: ^6.3.1
-  url_launcher: ^6.1.10
+  flutter_markdown: ^0.6.18
+  flutter_riverpod: ^2.4.10
+  flutter_svg: ^2.0.10+1
+  github: ^9.24.0
+  http: ^1.2.0
+  macos_ui: ^2.0.5
+  markdown: ^7.2.1
+  pub_api_client: 2.6.0
+  share_plus: ^7.2.2
+  url_launcher: ^6.2.5
 
+# dependency-overrides:
+#   collection: 1.17.1
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
 

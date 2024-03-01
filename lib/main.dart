@@ -4,7 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
 
-void main() {
+Future<void> _configureMacosWindowUtils() async {
+  const config = MacosWindowUtilsConfig(
+    toolbarStyle: NSWindowToolbarStyle.unified,
+  );
+  await config.apply();
+}
+
+void main() async {
+  await _configureMacosWindowUtils();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -27,7 +35,7 @@ class MyApp extends StatelessWidget {
         iconTheme: const MacosIconThemeData(
           color: Color(0xffa7b39a),
         ),
-        typography: MacosTypography.white,
+        //typography: MacosTypography.of(context).,
       ),
       themeMode: ThemeMode.system,
       home: const Nav(),

@@ -1,4 +1,3 @@
-
 import 'package:deskpub/models/trending.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +7,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../providers/providers.dart';
 
 class TrendingMonth extends ConsumerWidget {
-  const TrendingMonth({Key? key}) : super(key: key);
+  const TrendingMonth({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

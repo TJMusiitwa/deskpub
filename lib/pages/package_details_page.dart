@@ -1,6 +1,5 @@
 import 'package:deskpub/widgets/readme_markdown.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show SelectableText;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github/github.dart';
 import 'package:http/http.dart' as http;
@@ -18,21 +17,21 @@ class PackageDetailsPage extends ConsumerWidget {
   final singlePackageProvider = FutureProvider.autoDispose
       .family<PubPackage, String>((ref, packageName) async {
     final client = ref.watch(pubClientProvider);
-    ref.onDispose(() => client.close());
+    //ref.onDispose(() => client.close());
     return await client.packageInfo(packageName);
   });
 
   final scorePackageProvider = FutureProvider.autoDispose
       .family<PackageScore, String>((ref, packageName) async {
     final client = ref.watch(pubClientProvider);
-    ref.onDispose(() => client.close());
+    //ref.onDispose(() => client.close());
     return await client.packageScore(packageName);
   });
 
   final metricsPackageProvider = FutureProvider.autoDispose
       .family<PackageMetrics?, String>((ref, packageName) async {
     final client = ref.watch(pubClientProvider);
-    ref.onDispose(() => client.close());
+    //ref.onDispose(() => client.close());
     return await client.packageMetrics(packageName);
   });
 
@@ -42,7 +41,7 @@ class PackageDetailsPage extends ConsumerWidget {
 
     final client = ref.watch(pubClientProvider).packageInfo(packageName);
     final data = client.then((value) async {
-      return '${value.latestPubspec.homepage!.replaceAll('github.com', 'raw.githubusercontent.com')}/README.md'
+      return '${value.latestPubspec.unParsedYaml!["repository"]!.replaceAll('github.com', 'raw.githubusercontent.com')}/master/README.md'
           .replaceFirst('/tree', '');
     }).then((url) async {
       response = await http.get(Uri.parse(url));
@@ -56,20 +55,29 @@ class PackageDetailsPage extends ConsumerWidget {
       .family<String, String>((ref, packageName) async {
     final client = ref.watch(pubClientProvider);
     final githubClient = ref.watch(githubClientProvider);
-
-    final owner = await client.packageInfo(packageName).then((value) =>
-        value.latestPubspec.author ??
-        value.latestPubspec.homepage!.split('/')[3]);
-    final name = await client
-        .packageInfo(packageName)
-        .then((value) => value.latestPubspec.name ?? value.name);
-    final readme =
-        githubClient.repositories.getReadme(RepositorySlug(owner, name));
-
-    ref.onDispose(() {
-      client.close();
-      githubClient.client.close();
+    final packageInfo = client.packageInfo(packageName);
+    final repositoryUrl = await packageInfo.then((value) {
+      if (value.latestPubspec.unParsedYaml!['repository'] != null) {
+        return value.latestPubspec.unParsedYaml!['repository'].toString();
+      } else if (value.latestPubspec.homepage != null) {
+        return value.latestPubspec.homepage!;
+      } else {
+        return 'Nothing here';
+      }
     });
+    final readme = githubClient.repositories.getReadme(RepositorySlug(
+        repositoryUrl.split('/')[3], repositoryUrl.split('/')[4]));
+
+    print('Repository URL: $repositoryUrl');
+
+    print(RepositorySlug(
+        repositoryUrl.split('/')[3], repositoryUrl.split('/')[4]));
+
+    // ref.onDispose(() {
+    //   //client.close();
+    //   githubClient.client.close();
+    // });
+    ref.keepAlive();
 
     return readme.then((value) => value.text);
   });
@@ -89,8 +97,8 @@ class PackageDetailsPage extends ConsumerWidget {
         githubClient.repositories.getReadme(RepositorySlug(owner, name));
 
     ref.onDispose(() {
-      client.close();
-      githubClient.client.close();
+      //client.close();
+      //githubClient.client.close();
     });
 
     return readme.then((value) => value);
@@ -148,25 +156,9 @@ class PackageDetailsPage extends ConsumerWidget {
                                 .body
                                 .copyWith(fontSize: 16)),
                         const SizedBox(height: 16),
-                        ...[
-                          if (package.latestPubspec.homepage != null)
-                            package.latestPubspec.homepage
-                                    !.contains('github.com')
-                                ? SelectableText(
-                                    'Raw ReadmeURL: ${package.latestPubspec.homepage!.replaceAll('github.com', 'raw.githubusercontent.com')}/README.md'
-                                        .replaceFirst('/tree', ''))
-                                : package.latestPubspec.unParsedYaml!
-                                        .containsKey('repository')
-                                    ? SelectableText(
-                                        'From UnparsedYaml: ${package.latestPubspec.unParsedYaml!['repository']}README.md')
-                                    : const Text('nothing here'),
-                        ],
-                        const SizedBox(height: 16),
-                        SelectableText(
-                            'From UnparsedYaml: ${package.latestPubspec.unParsedYaml!['repository']}README.md'),
-                        const SizedBox(height: 16),
-                        markdown.when(
-                          data: ((data) => PackageReadMeMarkdown(readme: data)),
+                        packageReadme.when(
+                          data: ((data) =>
+                              PackageReadMeMarkdown(readme: data!)),
                           error: (error, trace) =>
                               Center(child: Text('Error: $error')),
                           loading: () => const Center(child: ProgressCircle()),
@@ -195,9 +187,9 @@ class PackageDetailsPage extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text('LIKES'),
                           Text('PUB POINTS'),
                           Text('POPULARITY'),

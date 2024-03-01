@@ -14,10 +14,11 @@ class PackageReadMeMarkdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Markdown(
+    return MarkdownBody(
       data: readme,
       selectable: true,
       shrinkWrap: true,
+      //physics: const NeverScrollableScrollPhysics(),
       styleSheetTheme: MarkdownStyleSheetBaseTheme.platform,
       styleSheet: MarkdownStyleSheet.fromCupertinoTheme(
           CupertinoTheme.of(context).copyWith(
@@ -25,11 +26,23 @@ class PackageReadMeMarkdown extends StatelessWidget {
         primaryColor: MacosTheme.of(context).primaryColor,
         scaffoldBackgroundColor: MacosTheme.of(context).canvasColor,
       )),
-      extensionSet: md.ExtensionSet.gitHubFlavored,
-      blockSyntaxes: const [md.CodeBlockSyntax(), md.TableSyntax()],
+      extensionSet: md.ExtensionSet(
+        md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+        <md.InlineSyntax>[
+          md.EmojiSyntax(),
+          ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
+        ],
+      ),
+      blockSyntaxes: const [
+        md.CodeBlockSyntax(),
+        md.TableSyntax(),
+        md.FencedCodeBlockSyntax()
+      ],
       inlineSyntaxes: [
         md.InlineHtmlSyntax(),
         md.CodeSyntax(),
+        md.ImageSyntax(),
+        md.LinkSyntax(),
       ],
       imageBuilder: (url, _, __) => url.isScheme('file')
           ? const SizedBox.shrink()

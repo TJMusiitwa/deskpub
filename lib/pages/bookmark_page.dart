@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class BookmarkPage extends StatelessWidget {
-  const BookmarkPage({Key? key}) : super(key: key);
+  const BookmarkPage({super.key});
 
   @override
   Widget build(BuildContext context) {

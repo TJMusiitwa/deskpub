@@ -8,7 +8,7 @@ import 'package:macos_ui/macos_ui.dart';
 import '../providers/providers.dart';
 
 class TrendingPage extends ConsumerStatefulWidget {
-  const TrendingPage({Key? key}) : super(key: key);
+  const TrendingPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _TrendingPageState();

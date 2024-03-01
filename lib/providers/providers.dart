@@ -11,7 +11,7 @@ final flutterFavouritesProvider =
     FutureProvider.autoDispose<List<String>>((ref) async {
   final client = ref.watch(pubClientProvider);
   ref.keepAlive();
-  ref.onDispose(() => client.close());
+  //ref.onDispose(() => client.close());
   return await client.fetchFlutterFavorites();
 });
 
