@@ -22,7 +22,6 @@ class _NavState extends State<Nav> {
   int pageIndex = 0;
 
   final List<Widget> pages = <Widget>[
-    //CupertinoTabView(builder: (BuildContext context) => const MenuPage()),
     CupertinoTabView(builder: (BuildContext context) => const FavouritesPage()),
     CupertinoTabView(builder: (BuildContext context) => const GooglePage()),
     CupertinoTabView(builder: (BuildContext context) => const FirebasePage()),
@@ -35,11 +34,11 @@ class _NavState extends State<Nav> {
     return Platform.isMacOS
         ? MacosWindow(
             sidebar: Sidebar(
+                top: const MacosSearchField(),
                 builder: (_, controller) => SidebarItems(
+                      itemSize: SidebarItemSize.large,
                       currentIndex: pageIndex,
-                      onChanged: (i) => setState(
-                        (() => pageIndex = i),
-                      ),
+                      onChanged: (i) => setState((() => pageIndex = i)),
                       items: [
                         const SidebarItem(
                           label: Text('Flutter Favourites'),
@@ -49,17 +48,19 @@ class _NavState extends State<Nav> {
                           ),
                         ),
                         SidebarItem(
-                            leading: SvgPicture.asset('assets/google.svg',
-                            colorFilter: const ColorFilter.mode(
+                            leading: SvgPicture.asset(
+                              'assets/google.svg',
+                              colorFilter: const ColorFilter.mode(
                                   CupertinoColors.systemGreen, BlendMode.srcIn),
-                                ),
+                            ),
                             label: const Text('Google Packages')),
                         SidebarItem(
-                            leading: SvgPicture.asset('assets/firebase.svg',
-                            colorFilter: const ColorFilter.mode(
-                                    CupertinoColors.systemYellow,
-                                    BlendMode.srcIn),
-                               ),
+                            leading: SvgPicture.asset(
+                              'assets/firebase.svg',
+                              colorFilter: const ColorFilter.mode(
+                                  CupertinoColors.systemYellow,
+                                  BlendMode.srcIn),
+                            ),
                             label: const Text('Firebase Packages')),
                         const SidebarItem(
                             leading: MacosIcon(
@@ -74,10 +75,7 @@ class _NavState extends State<Nav> {
                       ],
                     ),
                 minWidth: 250),
-            child: IndexedStack(
-              index: pageIndex,
-              children: pages,
-            ))
+            child: IndexedStack(index: pageIndex, children: pages))
         : NavigationView(
             appBar: const NavigationAppBar(
               title: Text('DeskPub'),
