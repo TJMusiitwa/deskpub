@@ -19,7 +19,7 @@ class PackageReadMeMarkdown extends StatelessWidget {
       selectable: true,
       shrinkWrap: true,
       //physics: const NeverScrollableScrollPhysics(),
-      styleSheetTheme: MarkdownStyleSheetBaseTheme.platform,
+      styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
       styleSheet: MarkdownStyleSheet.fromCupertinoTheme(
           CupertinoTheme.of(context).copyWith(
         brightness: MacosTheme.of(context).brightness,
@@ -30,7 +30,7 @@ class PackageReadMeMarkdown extends StatelessWidget {
         md.ExtensionSet.gitHubFlavored.blockSyntaxes,
         <md.InlineSyntax>[
           md.EmojiSyntax(),
-          ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
+          ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
         ],
       ),
       blockSyntaxes: const [
@@ -44,11 +44,19 @@ class PackageReadMeMarkdown extends StatelessWidget {
         md.ImageSyntax(),
         md.LinkSyntax(),
       ],
-      imageBuilder: (url, _, __) => url.isScheme('file')
-          ? const SizedBox.shrink()
-          : url.path.endsWith('.svg')
-              ? SvgPicture.network(url.origin + url.path)
-              : Image.network(url.origin + url.path),
+      imageBuilder: (url, _, __) {
+        debugPrint(url.path);
+        return url.isScheme('file')
+            ? const SizedBox.shrink()
+            : url.path.endsWith('.svg')
+                ? SvgPicture.network(url.origin + url.path)
+                : url.path.endsWith('.png') || url.path.endsWith('.jpg')
+                    ? Image.network(url.origin + url.path)
+                    : const MacosIcon(
+                        CupertinoIcons.exclamationmark_triangle_fill,
+                        color: MacosColors.appleRed);
+      },
+
       onTapLink: (link, _, __) => launchUrlString(link),
     );
   }
