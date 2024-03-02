@@ -62,9 +62,7 @@ class TrendingMonth extends ConsumerWidget {
         },
       ),
       error: (error, trace) => Center(child: Text('Error: $error')),
-      loading: () => const Center(
-        child: ProgressCircle(),
-      ),
+      loading: () => const Center(child: ProgressCircle()),
     );
   }
 }
